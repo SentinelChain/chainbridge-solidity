@@ -42,17 +42,29 @@ contract('Bridge - [voteProposal with relayerThreshold == 3]', async (accounts) 
     let vote, executeProposal;
 
     beforeEach(async () => {
+
         await Promise.all([
-            BridgeContract.new(destinationChainID, [
+/*            (BridgeContract.new()).__Bridge_init(destinationChainID, [
                 relayer1Address,
                 relayer2Address,
                 relayer3Address,
                 relayer4Address], 
                 relayerThreshold, 
                 0,
-                10,).then(instance => BridgeInstance = instance),
+                10,).then(instance => BridgeInstance = instance),*/
             ERC20MintableContract.new("token", "TOK").then(instance => DestinationERC20MintableInstance = instance)
         ]);
+
+        BridgeInstance=await BridgeContract.new();
+        await BridgeInstance.__Bridge_init(destinationChainID, [
+            relayer1Address,
+            relayer2Address,
+            relayer3Address,
+            relayer4Address], 
+            relayerThreshold, 
+            0,
+            10,);
+
         
         resourceID = Helpers.createResourceID(DestinationERC20MintableInstance.address, originChainID);
         initialResourceIDs = [resourceID];

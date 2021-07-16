@@ -32,8 +32,11 @@ contract('Bridge - [deposit - ERC20]', async (accounts) => {
     beforeEach(async () => {
         await Promise.all([
             ERC20MintableContract.new("token", "TOK").then(instance => OriginERC20MintableInstance = instance),
-            BridgeInstance = await BridgeContract.new(originChainID, [], relayerThreshold, 0, 100)
+            //BridgeInstance = await BridgeContract.new().__Bridge_init(originChainID, [], relayerThreshold, 0, 100)
         ]);
+        BridgeInstance = await BridgeContract.new();
+        await BridgeInstance.__Bridge_init(originChainID, [], relayerThreshold, 0, 100);
+
         
         
         resourceID = Helpers.createResourceID(OriginERC20MintableInstance.address, originChainID);

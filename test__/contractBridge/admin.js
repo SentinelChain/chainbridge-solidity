@@ -8,10 +8,10 @@ const Ethers = require('ethers');
 const Helpers = require('../helpers');
 
 const BridgeContract = artifacts.require("Bridge");
-const ERC20MintableContract = artifacts.require("ERC20PresetMinterPauser");
-const ERC20HandlerContract = artifacts.require("ERC20Handler");
-const GenericHandlerContract = artifacts.require('GenericHandler');
-const CentrifugeAssetContract = artifacts.require("CentrifugeAsset");
+//const ERC20MintableContract = artifacts.require("ERC20PresetMinterPauser");
+//const ERC20HandlerContract = artifacts.require("ERC20Handler");
+//const GenericHandlerContract = artifacts.require('GenericHandler');
+//const CentrifugeAssetContract = artifacts.require("CentrifugeAsset");
 
 // This test does NOT include all getter methods, just 
 // getters that should work with only the constructor called
@@ -109,7 +109,7 @@ contract('Bridge - [admin]', async accounts => {
         await TruffleAssert.passes(BridgeInstance.renounceAdmin(expectedBridgeAdmin2))
         assert.isTrue(await BridgeInstance.hasRole(ADMIN_ROLE, expectedBridgeAdmin2));
     });
-
+/*
     // Set Handler Address
 
     it('Should set a Resource ID for handler address', async () => {
@@ -222,4 +222,5 @@ contract('Bridge - [admin]', async accounts => {
     it('Should require admin role to withdraw funds', async () => {
         await assertOnlyAdmin(BridgeInstance.adminWithdraw, someAddress, someAddress, someAddress, 0);
     });
+*/
 });

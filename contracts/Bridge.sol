@@ -1,6 +1,7 @@
-pragma solidity 0.6.12;
+pragma solidity 0.8.6;
 pragma experimental ABIEncoderV2;
 
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "./utils/AccessControl.sol";
 import "./utils/Pausable.sol";
 import "./utils/SafeMath.sol";
@@ -13,7 +14,7 @@ import "./interfaces/IGenericHandler.sol";
     @title Facilitates deposits, creation and voting of deposit proposals, and deposit executions.
     @author ChainSafe Systems.
  */
-contract Bridge is Pausable, AccessControl, SafeMath {
+contract Bridge is Pausable, AccessControl, SafeMath, Initializable {
     using SafeCast for *;
 
     // Limit relayers number because proposal can fit only so much votes
@@ -92,7 +93,7 @@ contract Bridge is Pausable, AccessControl, SafeMath {
     }
 
     function _relayerBit(address relayer) private view returns(uint) {
-        return uint(1) << sub(AccessControl.getRoleMemberIndex(RELAYER_ROLE, relayer), 1);
+        return uint(1) << sub(uint256(AccessControl.getRoleMemberIndex(RELAYER_ROLE, relayer)), 1);
     }
 
     function _hasVoted(Proposal memory proposal, address relayer) private view returns(bool) {
@@ -106,17 +107,24 @@ contract Bridge is Pausable, AccessControl, SafeMath {
         @param initialRelayers Addresses that should be initially granted the relayer role.
         @param initialRelayerThreshold Number of votes needed for a deposit proposal to be considered passed.
      */
-    constructor (uint8 chainID, address[] memory initialRelayers, uint256 initialRelayerThreshold, uint256 fee, uint256 expiry) public {
+     function __Bridge_init(
+         uint8            chainID, 
+         address[] memory initialRelayers, 
+         uint256          initialRelayerThreshold, 
+         uint256          fee, 
+         uint256          expiry
+         )
+     public initializer {
         _chainID = chainID;
         _relayerThreshold = initialRelayerThreshold.toUint8();
         _fee = fee.toUint128();
         _expiry = expiry.toUint40();
 
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
-
         for (uint256 i; i < initialRelayers.length; i++) {
             grantRole(RELAYER_ROLE, initialRelayers[i]);
         }
+
     }
 
     /**

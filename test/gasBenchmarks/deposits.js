@@ -47,8 +47,11 @@ contract('Gas Benchmark - [Deposits]', async (accounts) => {
     let threeArgumentsResourceID;
 
     before(async () => {
+        BridgeInstance=await BridgeContract.new();
+        await BridgeInstance.__Bridge_init(chainID, [], relayerThreshold, 0, 100);
+
         await Promise.all([
-            BridgeContract.new(chainID, [], relayerThreshold, 0, 100).then(instance => BridgeInstance = instance),
+            //BridgeContract.new(chainID, [], relayerThreshold, 0, 100).then(instance => BridgeInstance = instance),
             ERC20MintableContract.new("token", "TOK").then(instance => ERC20MintableInstance = instance),
             ERC721MintableContract.new("token", "TOK", "").then(instance => ERC721MintableInstance = instance),
             CentrifugeAssetContract.new().then(instance => CentrifugeAssetInstance = instance),

@@ -33,8 +33,12 @@ contract('Gas Benchmark - [Vote Proposal]', async (accounts) => {
     const vote = (resourceID, depositNonce, depositDataHash, relayer) => BridgeInstance.voteProposal(chainID, depositNonce, resourceID, depositDataHash, { from: relayer });
 
     before(async () => {
+
+        BridgeInstance=await BridgeContract.new();
+        await BridgeInstance.__Bridge_init(chainID, initialRelayers, relayerThreshold, 0, 100);
+
         await Promise.all([
-            BridgeContract.new(chainID, initialRelayers, relayerThreshold, 0, 100).then(instance => BridgeInstance = instance),
+            //BridgeContract.new(chainID, initialRelayers, relayerThreshold, 0, 100).then(instance => BridgeInstance = instance),
             ERC20MintableContract.new("token", "TOK").then(instance => ERC20MintableInstance = instance),
         ]);
 

@@ -43,11 +43,17 @@ contract('E2E ERC721 - Two EVM Chains', async accounts => {
 
     beforeEach(async () => {
         await Promise.all([
-            BridgeContract.new(originChainID, [originRelayer1Address, originRelayer2Address], originRelayerThreshold, 0, 100).then(instance => OriginBridgeInstance = instance),
-            BridgeContract.new(destinationChainID, [destinationRelayer1Address, destinationRelayer2Address], destinationRelayerThreshold, 0, 100).then(instance => DestinationBridgeInstance = instance),
+            //BridgeContract.new(originChainID, [originRelayer1Address, originRelayer2Address], originRelayerThreshold, 0, 100).then(instance => OriginBridgeInstance = instance),
+            //BridgeContract.new(destinationChainID, [destinationRelayer1Address, destinationRelayer2Address], destinationRelayerThreshold, 0, 100).then(instance => DestinationBridgeInstance = instance),
             ERC721MintableContract.new("token", "TOK", "").then(instance => OriginERC721MintableInstance = instance),
             ERC721MintableContract.new("token", "TOK", "").then(instance => DestinationERC721MintableInstance = instance)
         ]);
+
+        OriginBridgeInstance=await BridgeContract.new();
+        await OriginBridgeInstance.__Bridge_init(originChainID, [originRelayer1Address, originRelayer2Address], originRelayerThreshold, 0, 100);
+        DestinationBridgeInstance=await BridgeContract.new();
+        await DestinationBridgeInstance.__Bridge_init(destinationChainID, [destinationRelayer1Address, destinationRelayer2Address], destinationRelayerThreshold, 0, 100);
+
         
         originResourceID = Helpers.createResourceID(OriginERC721MintableInstance.address, originChainID);
         originInitialResourceIDs = [originResourceID];

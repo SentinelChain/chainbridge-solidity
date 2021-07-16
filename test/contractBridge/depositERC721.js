@@ -37,8 +37,12 @@ contract('Bridge - [deposit - ERC721]', async (accounts) => {
     beforeEach(async () => {
         await Promise.all([
             ERC721MintableContract.new("token", "TOK", "").then(instance => OriginERC721MintableInstance = instance),
-            BridgeContract.new(originChainID, [], 0, 0, 100).then(instance => BridgeInstance = instance)
+            //BridgeContract.new().__Bridge_init(originChainID, [], 0, 0, 100).then(instance => BridgeInstance = instance)
         ]);
+
+        BridgeInstance = await BridgeContract.new();
+        await BridgeInstance.__Bridge_init(originChainID, [], 0, 0, 100);
+
         
         originResourceID = Helpers.createResourceID(OriginERC721MintableInstance.address, originChainID);
         originInitialResourceIDs = [];

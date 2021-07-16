@@ -38,8 +38,11 @@ contract('GenericHandler - [Execute Proposal]', async (accounts) => {
     let depositData;
 
     beforeEach(async () => {
+        BridgeInstance=await BridgeContract.new();
+        await BridgeInstance.__Bridge_init(chainID, initialRelayers, relayerThreshold, 0, 100);
+
         await Promise.all([
-            BridgeContract.new(chainID, initialRelayers, relayerThreshold, 0, 100).then(instance => BridgeInstance = instance),
+            //BridgeContract.new(chainID, initialRelayers, relayerThreshold, 0, 100).then(instance => BridgeInstance = instance),
             CentrifugeAssetContract.new(centrifugeAssetMinCount).then(instance => CentrifugeAssetInstance = instance)
         ]);
 

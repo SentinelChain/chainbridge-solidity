@@ -57,14 +57,14 @@ contract('Bridge - [voteProposal with relayerThreshold == 3]', async (accounts) 
         ]);
         
         BridgeInstance = await BridgeContract.new();
-        await BridgeInstance.__Bridge_init(destinationChainID, [
+        BridgeInstance.__Bridge_init(destinationChainID, [
             relayer1Address,
             relayer2Address,
             relayer3Address,
             relayer4Address], 
             relayerThreshold, 
             0,
-            100);
+            100,);
 
         resourceID = Helpers.createResourceID(DestinationERC20MintableInstance.address, originChainID);
         initialResourceIDs = [resourceID];

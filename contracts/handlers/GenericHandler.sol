@@ -1,5 +1,5 @@
-pragma solidity 0.6.12;
-pragma experimental ABIEncoderV2;
+pragma solidity 0.8.6;
+pragma abicoder v2;
 
 import "../interfaces/IGenericHandler.sol";
 
@@ -168,7 +168,9 @@ contract GenericHandler is IGenericHandler {
             }
             // metadataDepositer contains 0xdepositerAddressdepositerAddressdeposite************************
             // Shift it 12 bytes right:   0x000000000000000000000000depositerAddressdepositerAddressdeposite
-            require(depositer == address(metadataDepositer >> 96), 'incorrect depositer in the data');
+            
+            //require(depositer == address(metadataDepositer >> 96), 'incorrect depositer in the data');
+            require(depositer == address(bytes20(bytes32(metadataDepositer))), 'incorrect depositer in the data');
         }
 
         require(_contractWhitelist[contractAddress], "provided contractAddress is not whitelisted");

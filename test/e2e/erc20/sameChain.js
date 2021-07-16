@@ -37,6 +37,10 @@ contract('E2E ERC20 - Same Chain', async accounts => {
             BridgeContract.new(chainID, [relayer1Address, relayer2Address], relayerThreshold, 0, 100).then(instance => BridgeInstance = instance),
             ERC20MintableContract.new("token", "TOK").then(instance => ERC20MintableInstance = instance)
         ]);
+
+        BridgeInstance=await BridgeContract.new();
+        await BridgeInstance.__Bridge_init(chainID, [relayer1Address, relayer2Address], relayerThreshold, 0, 100);
+
         
         resourceID = Helpers.createResourceID(ERC20MintableInstance.address, chainID);
     

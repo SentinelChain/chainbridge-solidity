@@ -36,8 +36,12 @@ contract('Bridge - [create a deposit proposal (voteProposal) with relayerThresho
     beforeEach(async () => {
         await Promise.all([
             ERC20MintableContract.new("token", "TOK").then(instance => DestinationERC20MintableInstance = instance),
-            BridgeContract.new(originChainID, [originChainRelayerAddress], relayerThreshold, 0, 100).then(instance => BridgeInstance = instance)
+            //BridgeContract.new().__Bridge_init(originChainID, [originChainRelayerAddress], relayerThreshold, 0, 100).then(instance => BridgeInstance = instance)
         ]);
+
+        BridgeInstance = await BridgeContract.new();
+        BridgeInstance.__Bridge_init(originChainID, [originChainRelayerAddress], relayerThreshold, 0, 100);
+
 
         initialResourceIDs = [];
         initialContractAddresses = [];
@@ -178,8 +182,12 @@ contract('Bridge - [create a deposit proposal (voteProposal) with relayerThresho
     beforeEach(async () => {
         await Promise.all([
             ERC20MintableContract.new("token", "TOK").then(instance => DestinationERC20MintableInstance = instance),
-            BridgeContract.new(originChainID, [originChainRelayerAddress], relayerThreshold, 0, 100).then(instance => BridgeInstance = instance)
+            //BridgeContract.new(originChainID, [originChainRelayerAddress], relayerThreshold, 0, 100).then(instance => BridgeInstance = instance)
         ]);
+
+        BridgeInstance = await BridgeContract.new();
+        await BridgeInstance.__Bridge_init(originChainID, [originChainRelayerAddress], relayerThreshold, 0, 100);
+
         
         initialResourceIDs = [];
         initialContractAddresses = [];

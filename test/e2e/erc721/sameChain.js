@@ -34,9 +34,12 @@ contract('E2E ERC721 - Same Chain', async accounts => {
 
     beforeEach(async () => {
         await Promise.all([
-            BridgeContract.new(chainID, [relayer1Address, relayer2Address], relayerThreshold, 0, 100).then(instance => BridgeInstance = instance),
+            //BridgeContract.new(chainID, [relayer1Address, relayer2Address], relayerThreshold, 0, 100).then(instance => BridgeInstance = instance),
             ERC721MintableContract.new("token", "TOK", "").then(instance => ERC721MintableInstance = instance)
         ]);
+
+        BridgeInstance=await BridgeContract.new();
+        await BridgeInstance.__Bridge_init(chainID, [relayer1Address, relayer2Address], relayerThreshold, 0, 100);
         
         resourceID = Helpers.createResourceID(ERC721MintableInstance.address, chainID);
         initialResourceIDs = [resourceID];
